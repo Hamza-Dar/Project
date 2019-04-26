@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/view_profile"
+            android:icon="@drawable/icons8user50"
+            android:title="Profile" />
+        <item
+            android:id="@+id/campus_events"
+            android:icon="@drawable/icons8university64"
+            android:title="Campus Events" />
+        <item
+            android:id="@+id/liked_posts"
+            android:icon="@drawable/ic_heart"
+            android:title="Liked Posts" />
+        <item
+            android:checkable="false"
+            android:enabled="false"
+            android:title="______________________________________________________________________________________________________________________________________________________"
+            android:visible="true" />
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/icons8_exit_100"
+            android:title="Logout" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/help"
+            android:icon="@android:drawable/ic_menu_help"
+            android:title="Help" />
+    </group>
+
+</menu>
