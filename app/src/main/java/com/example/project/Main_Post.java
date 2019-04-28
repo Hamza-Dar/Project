@@ -1,19 +1,12 @@
 package com.example.project;
 
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,11 +22,14 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.appinvite.AppInviteInvitation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 public class Main_Post extends AppCompatActivity
@@ -47,88 +43,64 @@ public class Main_Post extends AppCompatActivity
     RecyclerView r;
     FirebaseAuth mAuth;
     FirebaseUser C_user;
-    FirebaseRecyclerAdapter<post, post_viewholder> firebaseadapter;
-    private static final float SHAKE_THRESHOLD = 5.25f; // m/S**2
-    private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 1000;
-    private long mLastShakeTime;
-    int lastpos;
-    private SensorManager mSensorMgr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__post);
 
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                          //  Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg =  "token = " + token;
+                        //Log.d(TAG, msg);
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.home_tabs);
+        TabLayout tabLayout = findViewById(R.id.home_tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         mAuth = FirebaseAuth.getInstance();
         C_user = mAuth.getCurrentUser();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
            navigationView.setNavigationItemSelectedListener(this);
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i= new Intent(getApplicationContext(), make_post.class);
-                startActivity(i);
-            }
+        fab.setOnClickListener(view -> {
+            Intent i= new Intent(getApplicationContext(), make_post.class);
+            startActivity(i);
         });
-/*
-        r = findViewById(R.id.all_post);
-        layout = new LinearLayoutManager(this);
-        layout.setReverseLayout(true);
-        layout.setStackFromEnd(true);
-        r.setLayoutManager(layout);
-
-        DatabaseReference dref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://projectsmd-4aa60.firebaseio.com/posts");
-        firebaseadapter = new FirebaseRecyclerAdapter<post, post_viewholder>( post.class,
-                R.layout.row_text,
-                post_viewholder.class,
-                dref
-        ) {
-            @Override
-            protected void populateViewHolder(post_viewholder viewHolder, post model, int position) {
-
-                viewHolder.set_post(model, getRef(position).getKey(), getApplication());
-            }
-        };
-
-        dref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // get total available quest
-                lastpos = (int) dataSnapshot.getChildrenCount();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        r.setItemAnimator(new DefaultItemAnimator());
-        r.setAdapter(firebaseadapter);
-
-        */
 
         View hView =  navigationView.getHeaderView(0);
 
@@ -143,12 +115,7 @@ public class Main_Post extends AppCompatActivity
             Picasso.get().load(image_url).into(img);
         }
 
-//        mSensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-//        Sensor accelerometer = mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-//        if (accelerometer != null) {
-//            mSensorMgr.registerListener((SensorEventListener) this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-//        }
-    }
+   }
 
 
     private void onInviteClicked() {
@@ -223,32 +190,5 @@ public class Main_Post extends AppCompatActivity
         return true;
     }
 
-//
-//    @Override
-//    public void onSensorChanged(SensorEvent event) {
-//        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-//            long curTime = System.currentTimeMillis();
-//            if ((curTime - mLastShakeTime) > MIN_TIME_BETWEEN_SHAKES_MILLISECS) {
-//
-//                float x = event.values[0];
-//                float y = event.values[1];
-//                float z = event.values[2];
-//
-//                double acceleration = Math.sqrt(Math.pow(x, 2) +
-//                        Math.pow(y, 2) +
-//                        Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
-//
-//                if (acceleration > SHAKE_THRESHOLD) {
-//                    mLastShakeTime = curTime;
-//                    Toast.makeText(getApplicationContext(), "Chor do hilaana -.-", Toast.LENGTH_SHORT).show();
-//                    firebaseadapter.notifyDataSetChanged();
-//
-//                    layout.scrollToPosition(lastpos-1);
-//                }
-//            }
-//        }
-//    }
-//    @Override
-//    public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 
 }

@@ -43,6 +43,10 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
@@ -53,6 +57,11 @@ public class MainActivity extends Activity {
     private GoogleSignInClient mGoogleSignInClient;
     private static final String EMAIL = "email";
     CallbackManager callbackManager;
+
+    public void createEvent(View v) {
+        Intent obj = new Intent(getApplicationContext(), Create_event.class);
+        startActivity(obj);
+    }
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
@@ -69,14 +78,14 @@ public class MainActivity extends Activity {
                             startActivity(obj);
                         } else {
                             // If sign in fails, display a message to the user.
-                            if (task.getException() instanceof FirebaseAuthUserCollisionException){
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 TextView email = findViewById(R.id.sign_email);
                                 email.requestFocus();
                                 email.setError("Email already registered");
                             }
 
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed. "+ task.getException().toString(),
+                            Toast.makeText(getApplicationContext(), "Authentication failed. " + task.getException().toString(),
                                     Toast.LENGTH_SHORT).show();
 
                         }
@@ -122,20 +131,37 @@ public class MainActivity extends Activity {
                     }
                 });
 
-        }
+    }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(mAuth.getCurrentUser()!=null){
-            finish();
-            Intent obj = new Intent(getApplicationContext(), Main_Post.class);
-            startActivity(obj);
+        if (mAuth.getCurrentUser() != null) {
+            FirebaseDatabase.getInstance().getReference().child("Event_Managers").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        finish();
+                        Intent obj = new Intent(getApplicationContext(), Event_Manager.class);
+                        startActivity(obj);
+                    } else {
+                        finish();
+                        Intent obj = new Intent(getApplicationContext(), Main_Post.class);
+                        startActivity(obj);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
     int RC_SIGN_IN = 121;
+
     public void signInwithGoogle(View v) {
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -158,7 +184,7 @@ public class MainActivity extends Activity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Failed "+task.getException().toString(), Toast.LENGTH_LONG ).show();
+                            Toast.makeText(getApplicationContext(), "Failed " + task.getException().toString(), Toast.LENGTH_LONG).show();
 
                         }
 
@@ -166,8 +192,6 @@ public class MainActivity extends Activity {
                     }
                 });
     }
-
-
 
 
     @Override
@@ -190,19 +214,34 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void login(View v){
+    public void login(View v) {
         TextView em = findViewById(R.id.sign_email);
         TextView pass = findViewById(R.id.sign_pass);
         mAuth.signInWithEmailAndPassword(em.getText().toString(), pass.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    finish();
-                    Intent obj = new Intent(getApplicationContext(), Main_Post.class);
-                    startActivity(obj);
-                }
-                else
-                {
+                if (task.isSuccessful()) {
+                    FirebaseDatabase.getInstance().getReference().child("Event_Managers").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                finish();
+                                Intent obj = new Intent(getApplicationContext(), Event_Manager.class);
+                                startActivity(obj);
+                            } else {
+                                finish();
+                                Intent obj = new Intent(getApplicationContext(), Main_Post.class);
+                                startActivity(obj);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                } else {
                     Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_LONG).show();
                 }
             }
@@ -210,12 +249,12 @@ public class MainActivity extends Activity {
 
     }
 
-    public void create_account(View v){
+    public void create_account(View v) {
         Intent obj = new Intent(this, create_profile.class);
         startActivity(obj);
     }
 
-    public void forget_pass(View v){
+    public void forget_pass(View v) {
         Intent obj = new Intent(this, ForgetPassword.class);
         startActivity(obj);
     }

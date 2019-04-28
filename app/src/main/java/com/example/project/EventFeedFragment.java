@@ -61,14 +61,14 @@ public class EventFeedFragment extends Fragment implements RecyclerView.OnItemTo
         layout.setStackFromEnd(true);
         rv.setLayoutManager(layout);
 
-        DatabaseReference dref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://projectsmd-4aa60.firebaseio.com/posts");
-        FirebaseRecyclerAdapter<post, post_viewholder> firebaseadapter = new FirebaseRecyclerAdapter<post, post_viewholder>( post.class,
-                R.layout.post_view,
-                post_viewholder.class,
+        DatabaseReference dref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://projectsmd-4aa60.firebaseio.com/Events");
+        FirebaseRecyclerAdapter<post, Event_Viewholder> firebaseadapter = new FirebaseRecyclerAdapter<post, Event_Viewholder>( post.class,
+                R.layout.event_row,
+                Event_Viewholder.class,
                 dref
         ) {
             @Override
-            protected void populateViewHolder(post_viewholder viewHolder, post model, int position) {
+            protected void populateViewHolder(Event_Viewholder viewHolder, post model, int position) {
 
                 viewHolder.set_post(model, getRef(position).getKey(), getActivity().getApplication());
             }
@@ -79,20 +79,6 @@ public class EventFeedFragment extends Fragment implements RecyclerView.OnItemTo
         rv.setAdapter(firebaseadapter);
 
 
-        /*NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
-        View hView =  navigationView.getHeaderView(0);
-
-        TextView name = hView.findViewById(R.id.user_name);
-        TextView email = hView.findViewById(R.id.user_email);
-        ImageView img = hView.findViewById(R.id.user_image);
-        name.setText(C_user.getDisplayName());
-        email.setText(C_user.getEmail());
-        if(C_user.getPhotoUrl()!=null) {
-            String image_url = C_user.getPhotoUrl().toString();
-            Toast.makeText(con, image_url, Toast.LENGTH_LONG).show();
-            Picasso.get().load(image_url).into(img);
-        }
-*/
         return view;
     }
 

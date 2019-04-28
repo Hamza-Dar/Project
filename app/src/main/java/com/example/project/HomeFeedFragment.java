@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +46,7 @@ public class HomeFeedFragment extends Fragment implements RecyclerView.OnItemTou
     GestureDetector gestureDetector;
     RecyclerView rv;
     LinearLayoutManager layout;
+    //private static final String TAG = "MainActivity";
 
 
     FirebaseAuth mAuth;
@@ -102,33 +105,30 @@ public class HomeFeedFragment extends Fragment implements RecyclerView.OnItemTou
 
                     }
                 });
-                viewHolder.like.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        like = true;
-                        likeref.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (like) {
-                                    if (dataSnapshot.child(getRef(position).getKey()).hasChild(mAuth.getCurrentUser().getUid())) {
-                                        UserRef.child(model.UID).child("likers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                                        likeref.child(getRef(position).getKey()).child(mAuth.getCurrentUser().getUid()).removeValue();
-                                        like=false;
-                                    } else {
-                                        UserRef.child(model.UID).child("likers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("liked");
-                                        likeref.child(getRef(position).getKey()).child(mAuth.getCurrentUser().getUid()).setValue("Random");
-                                        like=false;
-                                    }
+                viewHolder.like.setOnClickListener(v -> {
+                    like = true;
+                    likeref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (like) {
+                                if (dataSnapshot.child(getRef(position).getKey()).hasChild(mAuth.getCurrentUser().getUid())) {
+                                    UserRef.child(model.UID).child("likers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()+"|"+getRef(position).getKey()).removeValue();
+                                    likeref.child(getRef(position).getKey()).child(mAuth.getCurrentUser().getUid()).removeValue();
+                                    like=false;
+                                } else {
+                                    UserRef.child(model.UID).child("likers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()+"|"+getRef(position).getKey()).setValue("liked");
+                                    likeref.child(getRef(position).getKey()).child(mAuth.getCurrentUser().getUid()).setValue("Random");
+                                    like=false;
                                 }
                             }
+                        }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
+                        }
+                    });
 
-                    }
                 });
             }
         };
@@ -148,6 +148,7 @@ public class HomeFeedFragment extends Fragment implements RecyclerView.OnItemTou
 
         rv.setItemAnimator(new DefaultItemAnimator());
         rv.setAdapter(firebaseadapter);
+
 
         /*NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);

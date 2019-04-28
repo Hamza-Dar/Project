@@ -61,6 +61,18 @@ public class post_viewholder extends RecyclerView.ViewHolder{
 
             }
         });
+        DatabaseReference dref = FirebaseDatabase.getInstance().getReference().child("Comments").child(post_key);
+        dref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                n_comnt.setText(String.valueOf((int)dataSnapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         v.setOnClickListener(new View.OnClickListener() {

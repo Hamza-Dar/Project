@@ -3,10 +3,14 @@
     package="com.example.project">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
-
         android:name=".Project"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,21 +18,53 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ForgetPassword"></activity>
+        <activity android:name=".UserProfile"></activity>
+
+        <service android:name=".MessageService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAIiz__gaKBVbVX0XHBVTeqDDVb8e0SSck" />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
+
+        <activity
+            android:name=".Event_Manager"
+            android:label="@string/title_activity_event__manager"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Create_event" />
+        <activity android:name=".ForgetPassword" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider615250948938041"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
+            android:authorities="com.facebook.app.FacebookContentProvider615250948938041"
+            android:exported="true" />
+
         <activity
             android:name=".Main_Post"
             android:label="@string/title_activity_main__post"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".View_post"
-            android:theme="@android:style/Theme.Black.NoTitleBar"/>
+        <activity
+            android:name=".View_post"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity android:name=".done_creating_account" />
         <activity android:name=".Add_information" />
         <activity
@@ -55,6 +91,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6ebaffd3c73fe38ecd10b57f0273a203873ee169" />
     </application>
 
 </manifest>
