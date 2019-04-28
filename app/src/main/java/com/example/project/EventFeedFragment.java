@@ -62,13 +62,14 @@ public class EventFeedFragment extends Fragment implements RecyclerView.OnItemTo
         rv.setLayoutManager(layout);
 
         DatabaseReference dref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://projectsmd-4aa60.firebaseio.com/Events");
-        FirebaseRecyclerAdapter<post, Event_Viewholder> firebaseadapter = new FirebaseRecyclerAdapter<post, Event_Viewholder>( post.class,
+        FirebaseRecyclerAdapter<Event_info, Event_Viewholder> firebaseadapter = new FirebaseRecyclerAdapter<Event_info, Event_Viewholder>(
+                Event_info.class,
                 R.layout.event_row,
                 Event_Viewholder.class,
                 dref
         ) {
             @Override
-            protected void populateViewHolder(Event_Viewholder viewHolder, post model, int position) {
+            protected void populateViewHolder(Event_Viewholder viewHolder, Event_info model, int position) {
 
                 viewHolder.set_post(model, getRef(position).getKey(), getActivity().getApplication());
             }

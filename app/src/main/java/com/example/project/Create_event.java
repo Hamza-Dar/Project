@@ -72,7 +72,7 @@ public class Create_event extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    int PLACE_PICKER_REQUEST = 1;
+    int PLACE_PICKER_REQUEST = 14;
     public void getlocationevent(View v) throws GooglePlayServicesNotAvailableException, GooglePlayServicesRepairableException {
 
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
@@ -184,7 +184,8 @@ public class Create_event extends AppCompatActivity implements OnMapReadyCallbac
                     Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
                     while(!uri.isComplete());
                     String imageuri = uri.getResult().toString();
-                    post p = new post(UID, Event_desc.getText().toString(), imageuri, Event_name.getText().toString());
+                    //post p = new post(UID, Event_desc.getText().toString(), imageuri, Event_name.getText().toString());
+                    Event_info p = new Event_info(latitude, longitude, Event_name.getText().toString(), Event_desc.getText().toString(), imageuri, UID);
                     DBRef.setValue(p);
                     prog.dismiss();
                     EventRef.child(Event_name.getText().toString()).setValue(Event_name.getText().toString());

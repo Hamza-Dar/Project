@@ -26,7 +26,7 @@ public class Post_adapter extends RecyclerView.Adapter<post_viewholder> {
     public void onBindViewHolder(@NonNull post_viewholder holder, int position) {
         if(items != null && holder != null) {
 
-            holder.set_values(items.get(holder.getAdapterPosition()));
+            //holder.set_values(items.get(holder.getAdapterPosition()));
         }
     }
 

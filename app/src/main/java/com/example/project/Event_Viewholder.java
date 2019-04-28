@@ -30,20 +30,20 @@ public class Event_Viewholder  extends RecyclerView.ViewHolder{
         Event_key =null;
     }
 
-    public void set_post(post p, String post_key, Context c){
-        Name.setText(p.getUserName());
-        desc.setText(p.getDesc());
+    public void set_post(Event_info p, String post_key, Context c){
+        Name.setText(p.getEvent_name());
+        desc.setText(p.getEvent_desc());
         Event_key = post_key;
-        if(p.getImage_uri()!=null) {
-            Picasso.get().load(p.image_uri).into(img);
+        if(p.getImage_url()!=null) {
+            Picasso.get().load(p.getImage_url()).into(img);
         }
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(Event_key!=null){
-                    Intent obj =  new Intent(c, View_post.class);
-                    obj.putExtra("post_key", Event_key);
+                    Intent obj =  new Intent(c, EVENT.class);
+                    obj.putExtra("event_key", Event_key);
                     c.startActivity(obj);
                 }
             }

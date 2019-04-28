@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserProfile"></activity>
+        <activity android:name=".EVENT"></activity>
+        <activity android:name=".UserProfile" />
 
         <service android:name=".MessageService">
             <intent-filter>

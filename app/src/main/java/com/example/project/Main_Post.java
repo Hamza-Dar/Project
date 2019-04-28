@@ -169,7 +169,10 @@ public class Main_Post extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.view_profile) {
-            //startActivity( new Intent(this, make_post.class));
+            Intent obj = new Intent(this, UserProfile.class);
+            obj.putExtra("UID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            obj.putExtra("name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            startActivity( obj);
         } else if (id == R.id.campus_events) {
 
         } else if (id == R.id.liked_posts) {
