@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#C9E0FF</color>
-    <color name="colorLogin">#4E5866</color>
     <color name="colorToolbar">#243447</color>
     <color name="colorPrimaryDark">#535958</color>
     <color name="colorAccent">#141D26</color>
+    <color name="colorUnfocused">#ECECB3</color>
+    <color name="colorDisabled">#838370</color>
     <color name="Text_color">#E7E2E2</color>
     <color name="UserName_color">#C9E0FF</color>
     <color name="red_500">#C51F5D</color>
+    <color name="startblue">#4072EE</color>
+    <color name="endblue">#6591DB</color>
 </resources>

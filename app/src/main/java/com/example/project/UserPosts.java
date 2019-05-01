@@ -24,8 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,13 +38,12 @@ import java.util.ArrayList;
 import static android.content.Context.SENSOR_SERVICE;
 
 
-public class HomeFeedFragment extends Fragment implements RecyclerView.OnItemTouchListener, SensorEventListener {
-    private static final String TAG = "HomeFragment";
+public class UserPosts extends Fragment implements RecyclerView.OnItemTouchListener, SensorEventListener {
+    private static final String TAG = "UserPosts";
 
     GestureDetector gestureDetector;
     RecyclerView rv;
     LinearLayoutManager layout;
-    //private static final String TAG = "MainActivity";
 
 
     FirebaseAuth mAuth;
@@ -68,12 +65,12 @@ public class HomeFeedFragment extends Fragment implements RecyclerView.OnItemTou
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_home_feed_fragment,container,false);
+        View view = inflater.inflate(R.layout.activity_user_posts,container,false);
 
         mAuth = FirebaseAuth.getInstance();
         C_user = mAuth.getCurrentUser();
         DatabaseReference UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        rv = view.findViewById(R.id.rcvHome);
+        rv = view.findViewById(R.id.rcvUserPosts);
         layout = new LinearLayoutManager(con);
         layout.setReverseLayout(true);
         layout.setStackFromEnd(true);
@@ -93,41 +90,44 @@ public class HomeFeedFragment extends Fragment implements RecyclerView.OnItemTou
                 likeref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.child(getRef(position).getKey()).hasChild(mAuth.getCurrentUser().getUid())) {
-                                viewHolder.like.setChecked(true);
-                            } else {
-                                viewHolder.like.setChecked(false);
-                            }
+                        if (dataSnapshot.child(getRef(position).getKey()).hasChild(mAuth.getCurrentUser().getUid())) {
+                            viewHolder.like.setChecked(true);
+                        } else {
+                            viewHolder.like.setChecked(false);
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
-                viewHolder.like.setOnClickListener(v -> {
-                    like = true;
-                    likeref.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (like) {
-                                if (dataSnapshot.child(getRef(position).getKey()).hasChild(mAuth.getCurrentUser().getUid())) {
-                                    UserRef.child(model.getUID()).child("likers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()+"|"+getRef(position).getKey()).removeValue();
-                                    likeref.child(getRef(position).getKey()).child(mAuth.getCurrentUser().getUid()).removeValue();
-                                    like=false;
-                                } else {
-                                    UserRef.child(model.getUID()).child("likers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()+"|"+getRef(position).getKey()).setValue("liked");
-                                    likeref.child(getRef(position).getKey()).child(mAuth.getCurrentUser().getUid()).setValue("Random");
-                                    like=false;
+                viewHolder.like.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        like = true;
+                        likeref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (like) {
+                                    if (dataSnapshot.child(getRef(position).getKey()).hasChild(mAuth.getCurrentUser().getUid())) {
+                                        UserRef.child(model.getUID()).child("likers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                                        likeref.child(getRef(position).getKey()).child(mAuth.getCurrentUser().getUid()).removeValue();
+                                        like=false;
+                                    } else {
+                                        UserRef.child(model.getUID()).child("likers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("liked");
+                                        likeref.child(getRef(position).getKey()).child(mAuth.getCurrentUser().getUid()).setValue("Random");
+                                        like=false;
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
 
+                    }
                 });
             }
         };
@@ -147,7 +147,6 @@ public class HomeFeedFragment extends Fragment implements RecyclerView.OnItemTou
 
         rv.setItemAnimator(new DefaultItemAnimator());
         rv.setAdapter(firebaseadapter);
-
 
         /*NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
@@ -209,7 +208,7 @@ public class HomeFeedFragment extends Fragment implements RecyclerView.OnItemTou
 
                 if (acceleration > SHAKE_THRESHOLD) {
                     mLastShakeTime = curTime;
-             //       Toast.makeText(con, "Chor do hilaana -.-", Toast.LENGTH_SHORT).show();
+                    //       Toast.makeText(con, "Chor do hilaana -.-", Toast.LENGTH_SHORT).show();
                     firebaseadapter.notifyDataSetChanged();
 
                     layout.scrollToPosition(lastpos-1);

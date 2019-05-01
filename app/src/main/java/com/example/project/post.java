@@ -1,7 +1,7 @@
 package com.example.project;
 
 public class post {
-    String UID, Desc, image_uri, UserName;
+    private String UID, Desc, image_uri, UserName;
 
     public post() {
     }

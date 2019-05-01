@@ -84,7 +84,7 @@
                 android:id="@+id/button_comment"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:layout_marginStart="176dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/comment_light"
@@ -94,24 +94,10 @@
                 android:textOn=""
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/n_cmnt"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_row" />
-
-            <ToggleButton
-                android:id="@+id/button_shoutout"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_marginStart="304dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/promotion"
-                android:checked="false"
-                android:text=""
-                android:textOff=""
-                android:textOn=""
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/n_shout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_row" />
+                app:layout_constraintTop_toBottomOf="@+id/image_row"
+                app:layout_constraintVertical_bias="0.0" />
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
@@ -135,6 +121,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:requiresFadingEdge="vertical"
+                android:scaleType="matrix"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/desc"
@@ -144,31 +132,16 @@
                 android:id="@+id/n_cmnt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="1dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="48dp"
                 android:layout_marginBottom="2dp"
                 android:text="3"
                 android:textAlignment="center"
                 android:textColor="@color/UserName_color"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/button_comment"
-                app:layout_constraintTop_toBottomOf="@+id/image_row" />
-
-            <TextView
-                android:id="@+id/n_shout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="40dp"
-                android:layout_marginBottom="2dp"
-                android:text="6"
-                android:textAlignment="center"
-                android:textColor="@color/UserName_color"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/button_shoutout"
-                app:layout_constraintTop_toBottomOf="@+id/image_row" />
+                app:layout_constraintTop_toBottomOf="@+id/image_row"
+                app:layout_constraintVertical_bias="0.571" />
 
             <TextView
                 android:id="@+id/n_likes"

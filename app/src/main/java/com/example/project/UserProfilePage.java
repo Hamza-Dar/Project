@@ -1,11 +1,19 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,18 +24,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
-public class UserProfile extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class UserProfilePage extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     String uid, name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
-        RecyclerView rv = findViewById(R.id.user_posts);
+        setContentView(R.layout.activity_user_profile_page);
+
+        FloatingActionButton fab = findViewById(R.id.fab2);
+
+
+        RecyclerView rv = findViewById(R.id.rv_new_userprofile);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setItemAnimator(new DefaultItemAnimator());
         uid = getIntent().getStringExtra("UID");
@@ -46,26 +60,34 @@ public class UserProfile extends AppCompatActivity {
         };
         rv.setAdapter(firebaseadapter);
 
-        DatabaseReference imgref =FirebaseDatabase.getInstance().getReference().child("User_Info").child(uid);
-        imgref.child("img_URI").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String path = (String) dataSnapshot.getValue();
-                ImageView dp = findViewById(R.id.user_profile_img);
-                Picasso.get().load(path).into(dp);
-            }
+        Intent obj = getIntent();
+        String path = obj.getStringExtra("url");
+        if(path!=null) {
+            CircleImageView dp = findViewById(R.id.circleImageView2);
+            Picasso.get().load(path).into(dp);
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        }) ;
-
-
-        TextView nameV = findViewById(R.id.user_profile_name);
+        TextView nameV = findViewById(R.id.Username_n_profile);
         nameV.setText(name);
+
+        if(!uid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            Button edt = findViewById(R.id.EditProfile);
+            edt.setVisibility(View.GONE);
+        }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i= new Intent(getApplicationContext(), make_post.class);
+                startActivity(i);
+            }
+        });
+
+
     }
 
-
-
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
+    }
 }

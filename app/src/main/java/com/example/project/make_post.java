@@ -70,10 +70,10 @@ public class make_post extends Activity {
            }
        });
 
-
+/*
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);*/
         dropdown.setAdapter(adapter);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseDatabase.getInstance();

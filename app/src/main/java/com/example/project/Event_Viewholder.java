@@ -44,7 +44,7 @@ public class Event_Viewholder  extends RecyclerView.ViewHolder{
                 if(Event_key!=null){
                     Intent obj =  new Intent(c, EVENT.class);
                     obj.putExtra("event_key", Event_key);
-                    obj.putExtra("event_name", p.event_name);
+                    obj.putExtra("event_name", p.getEvent_name());
                     c.startActivity(obj);
                 }
             }

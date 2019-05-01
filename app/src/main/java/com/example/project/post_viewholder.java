@@ -151,16 +151,16 @@ public class post_viewholder extends RecyclerView.ViewHolder {
         Name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent obj = new Intent(c, UserProfile.class);
-                obj.putExtra("UID", p.UID);
-                obj.putExtra("name", p.UserName);
+                Intent obj = new Intent(c, UserProfilePage.class);
+                obj.putExtra("UID", p.getUID());
+                obj.putExtra("name", p.getUserName());
                 c.startActivity( obj);
             }
         });
         desc.setText(p.getDesc());
         postkey = post_key;
         if (p.getImage_uri() != null) {
-            Picasso.get().load(p.image_uri).into(img);
+            Picasso.get().load(p.getImage_uri()).into(img);
         }
         DatabaseReference likeref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://projectsmd-4aa60.firebaseio.com/likes");
         likeref.child(post_key).addValueEventListener(new ValueEventListener() {

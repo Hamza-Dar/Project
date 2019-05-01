@@ -156,7 +156,6 @@ public class Main_Post extends AppCompatActivity
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomeFeedFragment(), "Home");
         adapter.addFragment(new EventFeedFragment(), "Events");
-        adapter.addFragment(new PopularFeedFragment(), "Popular");
         viewPager.setAdapter(adapter);
     }
 
@@ -169,11 +168,16 @@ public class Main_Post extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.view_profile) {
-            Intent obj = new Intent(this, UserProfile.class);
+            Intent obj = new Intent(this, UserProfilePage.class);
             obj.putExtra("UID", FirebaseAuth.getInstance().getCurrentUser().getUid());
             obj.putExtra("name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            obj.putExtra("url", FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
             startActivity( obj);
-        } else if (id == R.id.campus_events) {
+        } else if (id == R.id.invite) {
+            Intent intent = new AppInviteInvitation.IntentBuilder("Join Post IT")
+                    .setMessage("Testing invite to POST IT")
+                    .build();
+            startActivityForResult(intent, 314);
 
         } else if (id == R.id.liked_posts) {
 

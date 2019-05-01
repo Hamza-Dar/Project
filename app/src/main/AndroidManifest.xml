@@ -13,13 +13,12 @@
     <application
         android:name=".Project"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/post_it"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/post_it"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".EVENT"></activity>
-        <activity android:name=".UserProfile" />
 
         <service android:name=".MessageService">
             <intent-filter>
@@ -40,6 +39,7 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
 
+        <activity android:name=".UserProfilePage" android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Event_Manager"
             android:label="@string/title_activity_event__manager"

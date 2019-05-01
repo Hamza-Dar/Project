@@ -5,34 +5,30 @@
     tools:showIn="navigation_view">
 
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/First_div">
+        android:checkableBehavior="single">
         <item
             android:id="@+id/view_profile"
             android:icon="@drawable/icons8user50"
             android:title="Profile" />
         <item
-            android:id="@+id/campus_events"
-            android:icon="@drawable/icons8university64"
-            android:title="Campus Events" />
-        <item
             android:id="@+id/liked_posts"
-            android:icon="@drawable/ic_heart"
+            android:icon="@drawable/ic_heart_border"
             android:title="Liked Posts" />
         <item
-            android:checkable="false"
-            android:enabled="false"
-            android:title="______________________________________________________________________________________________________________________________________________________"
-            android:visible="true" />
+            android:id="@+id/invite"
+            android:icon="@drawable/icons8university64"
+            android:title="Invite" />
     </group>
 
-    <group>
+    <group android:id="@+id/Second_div">
         <item
             android:id="@+id/logout"
             android:icon="@drawable/icons8_exit_100"
             android:title="Logout" />
         <item
             android:id="@+id/settings"
-            android:icon="@drawable/settings"
+            android:icon="@drawable/settings_work_tool"
             android:title="Settings" />
         <item
             android:id="@+id/help"

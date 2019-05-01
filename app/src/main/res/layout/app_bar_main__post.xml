@@ -28,7 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:tabBackground="@color/colorToolbar"
-                app:tabIndicatorColor="#E91E63" />
+                app:tabIndicatorColor="@color/red_500"
+                app:tabSelectedTextColor="@color/red_500" />
 
         </android.support.design.widget.AppBarLayout>
 
