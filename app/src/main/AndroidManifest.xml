@@ -18,7 +18,8 @@
         android:roundIcon="@drawable/post_it"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EVENT"></activity>
+        <activity android:name=".EditUserProfile"></activity>
+        <activity android:name=".EVENT" />
 
         <service android:name=".MessageService">
             <intent-filter>
@@ -39,7 +40,9 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
 
-        <activity android:name=".UserProfilePage" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".UserProfilePage"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Event_Manager"
             android:label="@string/title_activity_event__manager"
